@@ -28,6 +28,7 @@ import (
 )
 
 type player struct {
+	Username   string
 	Ready      bool
 	In         bool
 	Called     bool

@@ -33,6 +33,7 @@ import (
 // it is illegal per the laws of poker given the state of the game at that time. This could include
 // illegal bet amounts, out-of-turn plays, or other violations of the rules.
 var ErrIllegalAction = errors.New("this action cannot be performed at this time")
+var ErrOutOfBounds = errors.New("error adding player at position (out of bounds)")
 
 /*
 var ErrBuyTooBig = errors.New("this would exceed the maximum configured purchased stack size")
