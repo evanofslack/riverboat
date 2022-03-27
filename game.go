@@ -372,8 +372,6 @@ func (g *Game) updateRoundInfo() {
 		g.setBetting(false)
 		deal(g, g.dealerNum, 0)
 	}
-	return
-
 }
 
 //Exported functions related to game management (not "Actions")
@@ -407,4 +405,21 @@ func (g *Game) AddPlayer() uint {
 	g.players = append(g.players, player{})
 	g.players[len(g.players)-1].initialize()
 	return uint(len(g.players) - 1)
+}
+
+func (g *Game) AddPlayerPosition(position uint) (uint, error) {
+
+	if int(position) > len(g.players) {
+		return 0, ErrOutOfBounds
+	}
+
+	if len(g.players) == int(position) {
+		g.players = append(g.players, player{})
+		g.players[len(g.players)-1].initialize()
+		return position, nil
+	}
+	g.players = append(g.players[:position+1], g.players[position:]...)
+	g.players[position] = player{}
+	g.players[position].initialize()
+	return position, nil
 }
