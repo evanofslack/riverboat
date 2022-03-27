@@ -596,5 +596,63 @@ func TestIntegration_Scenarios(t *testing.T) {
 		}
 
 	})
+	t.Run("Scenario 9 set username", func(t *testing.T) {
+		g := NewGame()
+
+		pn_a := g.AddPlayer()
+		g.AddPlayer()
+		g.AddPlayer()
+
+		username := "test"
+
+		err := setUsername(g, pn_a, username)
+
+		if err != nil {
+			t.Error("Test failed - Could not set username.")
+		}
+		view := g.GeneratePlayerView(pn_a)
+
+		if view.Players[0].Username != username {
+			t.Error("Test failed - Could not set username.")
+		}
+	})
+
+	t.Run("Scenario 10 add players at positions", func(t *testing.T) {
+		g := NewGame()
+
+		pn_a, err := g.AddPlayerPosition(0)
+		if err != nil {
+			t.Error("Test failed - failed to add player a 0th position")
+		}
+
+		_, err = g.AddPlayerPosition(1)
+		if err != nil {
+			t.Error("Test failed - failed to add player a 1th position")
+		}
+
+		_, err = g.AddPlayerPosition(3)
+		if err != ErrOutOfBounds {
+			t.Error("Test failed - AddPlayerPosition must return ErrOutOfBounds as when adding a player at position 3 to a game with only 2 players.")
+		}
+
+		g.AddPlayer()
+		view := g.GenerateOmniView()
+		if len(view.Players) != 3 {
+			t.Error("Test failed - there should be 3 players in the game")
+		}
+
+		username := "test"
+		setUsername(g, pn_a, username)
+
+		g.AddPlayerPosition(0)
+		view = g.GenerateOmniView()
+		if len(view.Players) != 4 {
+			t.Error("Test failed - there should be 4 players in the game")
+		}
+		if view.Players[1].Username != username {
+			t.Error("Test failed - pn_a should be pushed to position 1 after insertion of player at position 0")
+		}
+
+	})
 
 }
