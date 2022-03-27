@@ -145,6 +145,21 @@ func buyIn(g *Game, pn uint, data uint) error {
 	return nil
 }
 
+// SetUsername sets a player's username
+func SetUsername(g *Game, pn uint, data string) error {
+	g.mtx.Lock()
+	defer g.mtx.Unlock()
+	return setUsername(g, pn, data)
+}
+
+func setUsername(g *Game, pn uint, data string) error {
+	p := g.getPlayer(pn)
+
+	p.Username = data
+
+	return nil
+}
+
 // Deal deals the next set of cards, as appropriate per g's internal state. If g is currently betting,
 // or pn is not the dealer, Deal will return an error. Otherwise, if g is stage PreDeal when Deal is called,
 // Deal shuffles the deck and deals each player who is ready 2 cards. If g is stage PreFlop, Deal deals the flop; if g
@@ -287,7 +302,7 @@ func fold(g *Game, pn uint, data uint) error {
 func Leave(g *Game, pn uint, data uint) error {
 	g.mtx.Lock()
 	defer g.mtx.Unlock()
-	return toggleReady(g, pn, data)
+	return leave(g, pn, data)
 }
 
 func leave(g *Game, pn uint, data uint) error {
