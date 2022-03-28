@@ -24,6 +24,7 @@
 package riverboat
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -655,4 +656,45 @@ func TestIntegration_Scenarios(t *testing.T) {
 
 	})
 
+	t.Run("Scenario 11 set player positions", func(t *testing.T) {
+		g := NewGame()
+
+		pn_a := g.AddPlayer()
+		setUsername(g, pn_a, "pn_a")
+		err := setPosition(g, pn_a, 2)
+		if err != nil {
+			t.Error("Test failed - setting valid position should not cause error")
+		}
+
+		pn_b := g.AddPlayer()
+		setUsername(g, pn_b, "pn_b")
+		err = setPosition(g, pn_b, 5)
+		if err != nil {
+			t.Error("Test failed - setting valid position should not cause error")
+		}
+
+		pn_c := g.AddPlayer()
+		setUsername(g, pn_c, "pn_c")
+		err = setPosition(g, pn_c, 9)
+		if err != nil {
+			t.Error("Test failed - setting valid position should not cause error")
+		}
+
+		pn_d := g.AddPlayer()
+		setUsername(g, pn_d, "pn_d")
+		err = setPosition(g, pn_d, 1)
+		if err != nil {
+			t.Error("Test failed - setting valid position should not cause error")
+		}
+		fmt.Println(g.players)
+		if g.players[0].Username != "pn_d" {
+			t.Error("Test failed - player order does not match position")
+		}
+
+		pn_e := g.AddPlayer()
+		err = setPosition(g, pn_e, 1)
+		if err != ErrInvalidPosition {
+			t.Error("Test failed - setting repeated position should raise error")
+		}
+	})
 }

@@ -23,6 +23,8 @@
 
 package riverboat
 
+import "sort"
+
 // Action is the generic type of all state machine transitions, formalized to better allow external agents to interact with the game.
 // For all Actions, g is the game in which it is performed and pn is the player number performing the action.
 // data represents different things for different Actions.
@@ -156,6 +158,38 @@ func setUsername(g *Game, pn uint, data string) error {
 	p := g.getPlayer(pn)
 
 	p.Username = data
+
+	return nil
+}
+
+// SetPosition assigns a position to each player. Position is not the same as the index of each player in g.players.
+// Position can be mapped to seats at a table.
+// i.e. pn1 has position 1, pn2 has position 4, and pn3 has position 5.
+func SetPosition(g *Game, pn uint, data uint) error {
+	g.mtx.Lock()
+	defer g.mtx.Unlock()
+	return setPosition(g, pn, data)
+}
+
+func setPosition(g *Game, pn uint, data uint) error {
+
+	// Position must be less than maximum number of allowable players.
+	// if data > g.config.MaxPlayers {
+	// 	return Error
+	// }
+
+	for _, p := range g.players {
+		if data == p.Position {
+			return ErrInvalidPosition
+		}
+	}
+	p := g.getPlayer(pn)
+	p.Position = data
+
+	// rearrange g.players order to match positions
+	sort.Slice(g.players, func(i, j int) bool {
+		return g.players[i].Position < g.players[j].Position
+	})
 
 	return nil
 }

@@ -34,6 +34,7 @@ import (
 // illegal bet amounts, out-of-turn plays, or other violations of the rules.
 var ErrIllegalAction = errors.New("this action cannot be performed at this time")
 var ErrOutOfBounds = errors.New("error adding player at position (out of bounds)")
+var ErrInvalidPosition = errors.New("error assigning player position, position already taken")
 
 /*
 var ErrBuyTooBig = errors.New("this would exceed the maximum configured purchased stack size")

@@ -29,6 +29,7 @@ import (
 
 type player struct {
 	Username   string
+	Position   uint
 	Ready      bool
 	In         bool
 	Called     bool
