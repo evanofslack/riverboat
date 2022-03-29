@@ -23,7 +23,9 @@
 
 package riverboat
 
-import "sort"
+import (
+	"sort"
+)
 
 // Action is the generic type of all state machine transitions, formalized to better allow external agents to interact with the game.
 // For all Actions, g is the game in which it is performed and pn is the player number performing the action.
@@ -177,6 +179,9 @@ func setPosition(g *Game, pn uint, data uint) error {
 	// if data > g.config.MaxPlayers {
 	// 	return Error
 	// }
+	if data == 0 {
+		panic("cannot insert player at position zero")
+	}
 
 	for _, p := range g.players {
 		if data == p.Position {

@@ -24,7 +24,6 @@
 package riverboat
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -686,13 +685,12 @@ func TestIntegration_Scenarios(t *testing.T) {
 		if err != nil {
 			t.Error("Test failed - setting valid position should not cause error")
 		}
-		fmt.Println(g.players)
 		if g.players[0].Username != "pn_d" {
 			t.Error("Test failed - player order does not match position")
 		}
 
 		pn_e := g.AddPlayer()
-		err = setPosition(g, pn_e, 1)
+		err = setPosition(g, pn_e, 9)
 		if err != ErrInvalidPosition {
 			t.Error("Test failed - setting repeated position should raise error")
 		}
