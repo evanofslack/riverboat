@@ -25,10 +25,12 @@ package riverboat
 
 import (
 	. "github.com/alexclewontin/riverboat/eval"
+	"github.com/google/uuid"
 )
 
 type player struct {
 	Username   string
+	ID         string
 	Position   uint
 	Ready      bool
 	In         bool
@@ -48,6 +50,7 @@ func (p *player) allIn() bool {
 func (p *player) initialize() {
 	*p = player{}
 
+	p.ID = uuid.New().String()
 	p.Ready = false
 	p.In = false
 	p.Called = false
